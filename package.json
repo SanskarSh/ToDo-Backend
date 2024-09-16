@@ -2,10 +2,11 @@
   "name": "todo-backend",
   "version": "1.0.0",
   "description": "Backend server for the To-Do app managing tasks, user authentication, alarms, Pomodoro timer, and Notion sync, built for secure, real-time productivity.",
-  "main": "app.js",
+  "main": "src/app.js",
+  "type": "module",
   "scripts": {
-    "start": "node server",
-    "dev": "node --watch --env-file=.env server"
+    "start": "node src/app",
+    "dev": "node --watch --env-file=.env src/app"
   },
   "repository": {
     "type": "git",
@@ -18,9 +19,12 @@
   },
   "homepage": "https://github.com/SanskarSh/ToDo-Backend#readme",
   "dependencies": {
-    "express": "^4.21.0"
+    "express": "^4.21.0",
+    "mongoose": "^8.6.2"
   },
   "devDependencies": {
-    "colors": "^1.4.0"
+    "bcrypt": "^5.1.1",
+    "colors": "^1.4.0",
+    "dotenv": "^16.4.5"
   }
 }
