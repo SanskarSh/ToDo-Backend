@@ -13,7 +13,7 @@ export const login = async (req, res, next) => {
     }
 
     // Check if the user already exists
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ username }).populate("tasks");
 
     if (existingUser) {
       // Compare the password
@@ -42,13 +42,13 @@ export const login = async (req, res, next) => {
       password: hashedPassword,
     });
 
-    // Send success response
+    // create new user
     return res.status(201).json({
       type: "success",
       message: "User created successfully.",
-      _id: existingUser._id,
-      username: existingUser.username,
-      tasks: existingUser.tasks,
+      _id: newUser._id,
+      username: newUser.username,
+      tasks: newUser.tasks,
     });
   } catch (error) {
     console.error("Error during login or user creation:", error);

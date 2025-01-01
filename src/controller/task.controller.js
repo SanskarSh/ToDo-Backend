@@ -1,10 +1,23 @@
 import Task from "../models/task.js";
+import User from "../models/user.js";
 
 // @desc Get all tasks
 // @route GET /api/:userId/tasks
 export const getAllTasks = async (req, res, next) => {
   try {
     const { userId } = req.params;
+
+    // Check if the user exists
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        type: "failure",
+        message: "User not found",
+      });
+    }
+
+    // Fetch tasks for the user
     const tasks = await Task.find({ user_id: userId });
     res.status(200).json({
       type: "success",
@@ -50,6 +63,12 @@ export const createTask = async (req, res, next) => {
     });
 
     const savedTask = await newTask.save();
+
+    await User.findByIdAndUpdate(
+      userId,
+      { $push: { tasks: savedTask._id } },
+      { new: true }
+    );
     res.status(201).json({ type: "success", message: "", savedTask });
   } catch (error) {
     res.status(500).json({ type: "success", message: "Server error", error });

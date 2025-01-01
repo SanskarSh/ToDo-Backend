@@ -39,20 +39,21 @@ app.use((err, req, res, next) => {
 
 async function main() {
   try {
-    await mongoose
-      .connect(MONGODB_URI)
-      .then(() => {
-        console.log("MongoDB Connected ✅");
-      })
-      .catch((err) => {
-        console.log(`Failed to connect to MongoDB: ${err}`);
-      });
+    const Database_Instance = await mongoose.connect(MONGODB_URI);
+    // .then(() => {
+    console.log(
+      `MongoDB Connected !! DB Host: ${Database_Instance.connection.host}`
+    );
+    // })
+    // .catch((err) => {
+    //   console.log(`Failed to connect to MongoDB: ${err}`);
+    // });
 
     app.listen(PORT, () =>
       console.log(`Server running on http://localhost:${PORT} 🚀`)
     );
   } catch (err) {
-    console.error(err);
+    console.error("MongoDB Error: " + err);
     process.exit(1);
   }
 }
